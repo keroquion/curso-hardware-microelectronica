@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reparación Pro — Curso de Ingeniería de Hardware y Microelectrónica</title>
+  <meta name="description" content="Portal interactivo profesional de estudio especializado en ingeniería de hardware, microelectrónica y reparación de placas base. Incluye simuladores, quizzes, flashcards, examen final y calculadoras técnicas.">
+  <meta name="keywords" content="reparacion computadoras, microelectronica, hardware, bios, placa madre, osciloscopio, boardview, soldadura BGA">
+  <meta name="author" content="Antigravity Learning Systems">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container" id="app-root-container">
+
+    <!-- Barra Lateral de Navegación -->
+    <aside class="sidebar" id="app-sidebar-navigation">
+      <div class="sidebar-header" id="sidebar-brand-section">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button id="sidebar-hamburger" class="hamburger-btn" title="Colapsar barra lateral">☰</button>
+          <h1 id="logo-btn" style="cursor:pointer;">
+            REPARACIÓN PRO <span>14 MODs</span>
+          </h1>
+        </div>
+
+        <!-- Barra de Progreso Global -->
+        <div class="progress-container" id="global-progress-wrapper">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          </div>
+          <div class="progress-text">
+            <span id="progress-count">0/14 Completados</span>
+            <span id="progress-pct" style="font-weight:700;">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Buscador de Contenidos -->
+      <div class="search-box" id="sidebar-search-wrapper">
+        <input type="text" id="search-input" placeholder="🔍 Buscar concepto o señal..." autocomplete="off">
+      </div>
+
+      <!-- Lista Dinámica de Módulos -->
+      <nav class="sidebar-list" id="sidebar-modules">
+        <!-- Renderizado dinámico desde app.js -->
+      </nav>
+    </aside>
+
+    <!-- Área de Contenido Principal -->
+    <main class="main-content" id="app-main-viewport">
+
+      <!-- Barra Superior -->
+      <header class="top-navbar" id="app-top-header">
+        <div class="nav-tabs" id="nav-tabs-container" style="display:none;">
+          <button class="tab-btn active" id="tab-theory">📖 Teoría</button>
+          <button class="tab-btn" id="tab-simulators">🔬 Simuladores</button>
+          <button class="tab-btn" id="tab-quiz">📝 Evaluación</button>
+          <button class="tab-btn" id="tab-flashcards">🃏 Fichas</button>
+          <button class="tab-btn" id="tab-notes">📋 Notas</button>
+        </div>
+
+        <div class="top-navbar-right">
+          <!-- Timer de Estudio -->
+          <div id="study-timer-display" class="study-timer" style="display:none;">
+            ⏱ 00:00
+          </div>
+          <!-- Indicador Offline -->
+          <div class="offline-badge">
+            <span class="status-dot"></span>
+            OFFLINE
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenedor Dinámico de Vistas -->
+      <section class="content-panel" id="content-panel">
+        <!-- Renderizado dinámico desde app.js -->
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="modules-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

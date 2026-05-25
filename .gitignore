@@ -1,0 +1,12 @@
+# Dependencias de Node
+node_modules/
+
+# Archivos temporales
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# Scripts de utilidad del proyecto (no necesarios en producción)
+read_pdfs.ps1
+copy_images.ps1
