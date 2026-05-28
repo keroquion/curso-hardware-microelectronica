@@ -4,6 +4,8 @@
  * Mejoras v2: Examen Final, Calculadoras, Timer, Mejoras UI, Corrección de bugs.
  */
 
+import { MODULES_DATA } from './modules-data.js';
+
 // Estado Global
 let state = {
   currentModuleId: null,   // Null = Dashboard
@@ -57,7 +59,7 @@ function loadStateFromStorage() {
   if (savedProgress) {
     state.progress = JSON.parse(savedProgress);
   } else {
-    for (let i = 1; i <= 14; i++) {
+    for (let i = 1; i <= 20; i++) {
       state.progress[i] = { completed: false, quizScore: 0, timeSpent: 0 };
     }
   }
@@ -128,7 +130,7 @@ function renderSidebar() {
 
   // Examen Final item
   const examItem = document.createElement("div");
-  const allDone = Object.values(state.progress).filter(p => p.completed).length >= 14;
+  const allDone = Object.values(state.progress).filter(p => p.completed).length >= 20;
   examItem.className = `module-item ${state.activeView === 'final-exam' ? 'active' : ''} ${allDone ? 'exam-ready' : ''}`;
   examItem.innerHTML = `
     <span class="module-num" style="color: var(--accent-orange);">🏆</span>
@@ -176,7 +178,7 @@ function renderSidebar() {
 
 function updateProgressBar() {
   let completedCount = 0;
-  const total = 14;
+  const total = MODULES_DATA.length;
   for (let i = 1; i <= total; i++) {
     if (state.progress[i]?.completed) completedCount++;
   }
@@ -285,7 +287,7 @@ function renderDashboard() {
   let gradedCount = 0;
   let totalTimeSpent = 0;
 
-  for (let i = 1; i <= 14; i++) {
+  for (let i = 1; i <= MODULES_DATA.length; i++) {
     if (state.progress[i]?.completed) completedCount++;
     if (state.progress[i]?.quizScore > 0) { totalScore += state.progress[i].quizScore; gradedCount++; }
     totalTimeSpent += (state.progress[i]?.timeSpent || 0);
@@ -294,11 +296,11 @@ function renderDashboard() {
   const avgScore = gradedCount > 0 ? Math.round((totalScore / gradedCount) * 10) / 10 : 0;
 
   let recommendedModuleId = 1;
-  for (let i = 1; i <= 14; i++) {
+  for (let i = 1; i <= MODULES_DATA.length; i++) {
     if (!state.progress[i]?.completed) { recommendedModuleId = i; break; }
   }
   const recommendedModule = MODULES_DATA.find(m => m.id === recommendedModuleId) || MODULES_DATA[0];
-  const allDone = completedCount === 14;
+  const allDone = completedCount === MODULES_DATA.length;
 
   container.innerHTML = `
     <div class="glass-panel dashboard-hero">
@@ -311,7 +313,7 @@ function renderDashboard() {
             <span class="completion-icon">🏆</span>
             <div>
               <strong>¡CURSO COMPLETADO!</strong>
-              <p>Has terminado los 14 módulos. Realiza el Examen Final para obtener tu certificado.</p>
+              <p>Has terminado los 20 módulos. Realiza el Examen Final para obtener tu certificado.</p>
             </div>
             <button class="btn-primary btn-gold" onclick="showFinalExam()">Tomar Examen Final</button>
           </div>
@@ -321,12 +323,12 @@ function renderDashboard() {
       <div class="stats-grid">
         <div class="stat-card-v2 cyan">
           <div class="stat-icon">📊</div>
-          <div class="stat-value">${Math.round((completedCount/14)*100)}%</div>
+          <div class="stat-value">${Math.round((completedCount/MODULES_DATA.length)*100)}%</div>
           <div class="card-title-sm">Progreso Global</div>
         </div>
         <div class="stat-card-v2 green">
           <div class="stat-icon">✅</div>
-          <div class="stat-value">${completedCount} / 14</div>
+          <div class="stat-value">${completedCount} / ${MODULES_DATA.length}</div>
           <div class="card-title-sm">Módulos Completos</div>
         </div>
         <div class="stat-card-v2 orange">
@@ -344,7 +346,7 @@ function renderDashboard() {
 
     <div class="dashboard-grid">
       <div>
-        <h3 style="margin-bottom: 20px; font-size: 1.1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Plan de Estudios — 14 Módulos</h3>
+        <h3 style="margin-bottom: 20px; font-size: 1.1rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px;">Plan de Estudios — 20 Módulos</h3>
         <div class="modules-grid-dashboard">
           ${MODULES_DATA.map(m => {
             const isCompleted = state.progress[m.id]?.completed;
@@ -494,7 +496,7 @@ function renderTheory(container, module) {
         <button class="btn-primary" onclick="markModuleAsRead(${module.id})">
           ✔ Marcar Leído
         </button>
-        <button class="nav-nav-btn" ${module.id >= 14 ? 'disabled style="opacity:0.3;cursor:default"' : ''} onclick="${module.id < 14 ? `navigateToModule(${module.id + 1})` : ''}">
+        <button class="nav-nav-btn" ${module.id >= MODULES_DATA.length ? 'disabled style="opacity:0.3;cursor:default"' : ''} onclick="${module.id < MODULES_DATA.length ? `navigateToModule(${module.id + 1})` : ''}">
           Siguiente Módulo →
         </button>
       </div>
@@ -945,7 +947,7 @@ function renderQuizResults(module) {
       </p>
       <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
         <button class="nav-nav-btn" onclick="navigateToModule(${module.id})">↺ Repetir Módulo</button>
-        ${module.id < 14 ? `<button class="btn-primary" onclick="navigateToModule(${module.id + 1})">Siguiente Módulo →</button>` : `<button class="btn-primary btn-gold" onclick="showFinalExam()">🏆 Tomar Examen Final</button>`}
+        ${module.id < MODULES_DATA.length ? `<button class="btn-primary" onclick="navigateToModule(${module.id + 1})">Siguiente Módulo →</button>` : `<button class="btn-primary btn-gold" onclick="showFinalExam()">🏆 Tomar Examen Final</button>`}
       </div>
     </div>
   `;
@@ -1223,9 +1225,10 @@ function renderFinalExamResults() {
           <div class="cert-decoration"></div>
           <div class="cert-title">CERTIFICADO DE COMPETENCIA</div>
           <div class="cert-course">Reparación Profesional de Hardware y Microelectrónica</div>
-          <div class="cert-detail">Has demostrado conocimiento en los 14 módulos del programa:<br>
-            Arquitectura, Esquemáticos, Diagnóstico, Soldadura, Firmware, Redes de Voltaje,<br>
-            VRM, USB-C, BGA, Metodología de Laboratorio, Linux, Producción Industrial y POST Analysis.
+          <div class="cert-detail">Has demostrado conocimiento en los 20 módulos del programa:<br>
+            Arquitectura, Esquemáticos, Diagnóstico, Soldadura, Firmware, VRM, USB-C, BGA,<br>
+            Linux, Producción Industrial, POST Analysis, Testers Especializados, Diagnóstico Web,<br>
+            Rescate por Líquidos, Ecosistema Apple, Compatibilidad de Repuestos y Gestión Corporativa.
           </div>
           <div class="cert-date">Fecha: ${new Date().toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' })}</div>
           <button class="btn-primary btn-gold" onclick="window.print()">🖨 Imprimir Certificado</button>
